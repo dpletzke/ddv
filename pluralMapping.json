@@ -1,0 +1,30 @@
+{
+  "Cellar": {
+    "pluralName": "Cellars",
+    "cost": 2
+  },
+  "Chapel": {
+    "pluralName": "Chapels",
+    "cost": 2
+  },
+  "Moat": {
+    "pluralName": "Moats",
+    "cost": "2"
+  },
+  "Harbinger": {
+    "pluralName": "Harbingers",
+    "cost": 3
+  },
+  "Merchant": {
+    "pluralName": "Merchants",
+    "cost": 3
+  },
+  "Vassal": {
+    "pluralName": "Vassals",
+    "cost": 3
+  },
+  "Village": {
+    "pluralName": "Villages",
+    "cost": 3
+  }
+}

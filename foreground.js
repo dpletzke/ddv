@@ -7,37 +7,73 @@
  * tavern mat
  */
 
-// const createCardList = () => {
-
-// };
-// createCardList();
-
-// document.querySelectorAll(".log-line > div").forEach((d) => {
-//   console.log(d.innerText.split(" "));
-// });
+//  ["generated", "Turn", "shuffles", "gets", "plays", "draws"]
 
 document.querySelector(".game-log").addEventListener(
   "DOMNodeInserted",
-  function (e) {
-    let cards = [];
-    document
-      .querySelectorAll(".full-card-name.card-name.unselectable")
-      .forEach((d) => {
-        cards.push(d.innerText.trim());
-      });
-
-    document.querySelectorAll(".log-line > div").forEach((d) => {
-      d.innerText.split(" ").forEach(w => {
-          
-      });
+  (e) => {
+    let cards = {};
+    document.querySelectorAll(".full-card-name.card-name").forEach((d) => {
+      const cardName = d.innerText.trim();
+      if (!/Boons/.test(cardName)) {
+        cards[d.innerText.trim()] = 0;
+      }
     });
+    const tracker = {};
+    document.querySelectorAll(".log-line > div").forEach((d) => {
+      const line = d.innerText.slice(0, -1).split(" ");
+
+      //starts with a Pasture
+      //starts with 3 Estates
+      //gains a Pasture
+      //gains 3 Pastures
+      //gains a Council Room
+      //gains 3 Council Rooms
+
+      if (["starts", "gains"].filter((w) => line.includes(w)).length >= 1) {
+        const player = line[0];
+        const cardAmountIndex = line.includes("starts")
+          ? line.findIndex((w) => w === "starts") + 2
+          : line.findIndex((w) => w === "gains") + 1;
+        const cardAmount = ["a", "an"].includes(line[cardAmountIndex])
+          ? 1
+          : Number(line[cardAmountIndex]);
+        const cardName = line.slice(cardAmountIndex + 1).join(" ");
+
+        // removes if more than one card gained
+        if (cardAmount > 1) {
+          cardName[cardName.length - 1] = cardName[cardName.length - 1].slice(
+            0,
+            -1
+          );
+        }
+
+        const penultimateWord = line[line.length - 2];
+        const lastWord = ["a", "an"].includes(penultimateWord)
+          ? line[line.length - 1]
+          : line[line.length - 1].slice(0, -1);
+        if (line.includes("starts") && !tracker[line[0]]) {
+          tracker[line[0]] = { ...cards };
+        }
+
+        if (line.includes("starts")) {
+          tracker[line[0]][lastWord] += ["a", "an"].includes(penultimateWord)
+            ? 1
+            : Number(penultimateWord);
+        }
+
+        if (line.includes("gains")) {
+          tracker[line[0]][lastWord] += ["a", "an"].includes(penultimateWord)
+            ? 1
+            : Number(penultimateWord);
+        }
+      }
+    });
+    console.log(tracker);
   },
   false
 );
 
-// document.addEventListener("DOMContentLoaded", function () {
-//   console.log(document.querySelector(".lnXdpd"));
-// });
 // if(document.querySelector('.lnXdpd')) {
 // }
 
