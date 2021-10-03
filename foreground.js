@@ -3,8 +3,7 @@
  * buys and gains
  * gains
  * trashes
- * exiles
- * tavern mat
+ * returns
  */
 
 //  ["generated", "Turn", "shuffles", "gets", "plays", "draws"]
@@ -13,6 +12,7 @@ document.querySelector(".game-log").addEventListener(
   "DOMNodeInserted",
   (e) => {
     let cards = {};
+    const cardList = require("./cardList.json");
     document.querySelectorAll(".full-card-name.card-name").forEach((d) => {
       const cardName = d.innerText.trim();
       if (!/Boons/.test(cardName)) {
@@ -29,6 +29,8 @@ document.querySelector(".game-log").addEventListener(
       //gains 3 Pastures
       //gains a Council Room
       //gains 3 Council Rooms
+      //returns
+      //trashes
 
       if (["starts", "gains"].filter((w) => line.includes(w)).length >= 1) {
         const player = line[0];
@@ -38,35 +40,17 @@ document.querySelector(".game-log").addEventListener(
         const cardAmount = ["a", "an"].includes(line[cardAmountIndex])
           ? 1
           : Number(line[cardAmountIndex]);
-        const cardName = line.slice(cardAmountIndex + 1).join(" ");
+        const rawCardName = line.slice(cardAmountIndex + 1).join(" ");
+        const cardName =
+          cardAmount > 1
+            ? cardList.plurals[rawCardName] || rawCardName.slice(0, -1)
+            : rawCardName;
 
-        // removes if more than one card gained
-        if (cardAmount > 1) {
-          cardName[cardName.length - 1] = cardName[cardName.length - 1].slice(
-            0,
-            -1
-          );
+        if (line.includes("starts") && !tracker[player]) {
+          tracker[player] = { ...cards };
         }
 
-        const penultimateWord = line[line.length - 2];
-        const lastWord = ["a", "an"].includes(penultimateWord)
-          ? line[line.length - 1]
-          : line[line.length - 1].slice(0, -1);
-        if (line.includes("starts") && !tracker[line[0]]) {
-          tracker[line[0]] = { ...cards };
-        }
-
-        if (line.includes("starts")) {
-          tracker[line[0]][lastWord] += ["a", "an"].includes(penultimateWord)
-            ? 1
-            : Number(penultimateWord);
-        }
-
-        if (line.includes("gains")) {
-          tracker[line[0]][lastWord] += ["a", "an"].includes(penultimateWord)
-            ? 1
-            : Number(penultimateWord);
-        }
+        tracker[player][cardName] += cardAmount;
       }
     });
     console.log(tracker);
