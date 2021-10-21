@@ -1,25 +1,81 @@
-.spinspinspin {
-    animation-name: spin;
-    animation-duration: 1.0s;
-    animation-iteration-count: infinite;
+.ddv-container {
+  z-index: 10000;
+  position: fixed;
+  top: 80%;
+  left : 80%;  
+  position: relative;
 }
 
-@keyframes spin {
-    0% {
-        transform: rotate(0deg);
-    }
-    100% {
-        transform: rotate(1440deg);
-    }
+.floating-toggle {
+  width: 60px;
+  height: 60px;
+  border-radius: 5px 30px 30px;
+  background-color: #e0ddcb;
+  background-image: url("https://www.transparenttextures.com/patterns/lined-paper.png");
+  background-size: 119%;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
 }
 
-#first {
-    position: absolute;
-    top: 20%;
-    left: 20%;
+.extension-title {
+  font-family: TrajanPro-Bold;
+  margin-top: 0.25em;
 }
-#second {
-    position: absolute;
-    top: 30%;
-    left: 40%;
+
+.open-palette-container {
+  width: fit-content;
+  background-color: #e0ddcb;
+  background-image: url("https://www.transparenttextures.com/patterns/lined-paper.png");
+  background-size: 119%;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  border-radius: 5px;
+}
+
+.close-button {
+  position: absolute;
+  padding: 0 0 0 5px;
+  margin: 0;
+  border: none;
+  background: none;
+  box-shadow: none;
+}
+
+.table-container {
+  padding: 10px;
+}
+
+.table-container > table > tbody > :nth-child(odd) {
+  background-color: rgba(0, 0, 0, 0.15);
+}
+
+.table-container > table > tbody > tr > :nth-child(n+3) {
+  border-left: 1px solid black;
+}
+
+.table-container > table > thead > th > :nth-child(n+3) {
+  border-left: 1px solid black;
+}
+
+.card-title {
+  font-family: TrajanPro-Bold;
+  padding-right: 15px;
+  font-size: 0.8rem;
+}
+
+.player-name {
+  text-align: center;
+  padding: 0px 5px 5px 5px;
+
+}
+
+.card-amount {
+  text-align: center;
+  padding: 0px 5px;
+  font-weight: 300;
+}
+
+.closed {
+  display: none;
 }

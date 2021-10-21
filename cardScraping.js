@@ -15,5 +15,3 @@ document.querySelectorAll("tbody > tr").forEach((row) => {
     };
   }
 });
-
-console.log(JSON.stringify(tracker, null, 2));
