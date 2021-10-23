@@ -173,7 +173,6 @@ const findCardOwnership = (tracker, card) => {
 };
 
 const makeTable = (target, tracker, cards) => {
-  console.log(tracker);
   while (target.firstChild) {
     target.removeChild(target.firstChild);
   }
@@ -188,6 +187,7 @@ const makeTable = (target, tracker, cards) => {
   });
 
   const tableBody = makeChildNode(table, "tbody");
+  makeChildNode(tableBody, "tr");
 
   cards.forEach((_, card) => {
     const cardOwnership = findCardOwnership(tracker, card);
@@ -200,6 +200,15 @@ const makeTable = (target, tracker, cards) => {
         addTextNode(tableData, num);
       });
     }
+  });
+  const tableBodyRow = makeChildNode(tableBody, "tr");
+  makeChildNode(tableBodyRow, "td", "card-title");
+  Object.values(tracker).forEach((list) => {
+    const total = Object.values(list).reduce((acc, num) => {
+      return Number.isNaN(num) ? acc : acc + num;
+    }, 0);
+    const tableData = makeChildNode(tableBodyRow, "td", "card-amount");
+    addTextNode(tableData, total);
   });
 };
 
@@ -291,7 +300,7 @@ const cards = new Map();
  * Listeners
  */
 
-const documentObserver = new MutationObserver((mutationsList, observer) => {
+const documentObserver = new MutationObserver((mutationsList) => {
   for (const mutation of mutationsList) {
     const { type, target, addedNodes } = mutation;
     let tracker = {};
@@ -345,17 +354,17 @@ const documentObserver = new MutationObserver((mutationsList, observer) => {
         "ddv-container"
       );
       dragElement(ddvContainer);
-      const floatingToggle = makeChildNode(
-        ddvContainer,
-        "div",
-        "floating-toggle"
-      );
-      const extTitle = makeChildNode(floatingToggle, "span", "extension-title");
-      addTextNode(extTitle, "DDV");
-      const openPaletteContainer = makeChildNode(ddvContainer, "div", [
-        "open-palette-container",
+      const floatingToggle = makeChildNode(ddvContainer, "div", [
+        "floating-toggle",
         "closed",
       ]);
+      const extTitle = makeChildNode(floatingToggle, "span", "extension-title");
+      addTextNode(extTitle, "DDV");
+      const openPaletteContainer = makeChildNode(
+        ddvContainer,
+        "div",
+        "open-palette-container"
+      );
       const closeButton = makeChildNode(
         openPaletteContainer,
         "button",
